@@ -1,7 +1,11 @@
 package com.listing.grocery.di
 
+import android.app.Application
+import androidx.room.Room
 import com.listing.grocery.common.Constants.BASE_URL
+import com.listing.grocery.common.Constants.DB_NAME
 import com.listing.grocery.data.ProductApi
+import com.listing.grocery.data.local.ProductsDB
 import com.listing.grocery.data.remote.repository.ProductRepositoryImpl
 import com.listing.grocery.domain.repository.ProductRepository
 import dagger.Module
@@ -28,7 +32,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideProductRepository(api: ProductApi): ProductRepository {
-        return ProductRepositoryImpl(api)
+    fun provideProductDatabase(app: Application): ProductsDB {
+        return Room.databaseBuilder(app, ProductsDB::class.java, DB_NAME).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductRepository(api: ProductApi, db: ProductsDB): ProductRepository {
+        return ProductRepositoryImpl(api, db.dao)
     }
 }

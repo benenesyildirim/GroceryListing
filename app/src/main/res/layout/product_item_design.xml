@@ -6,7 +6,7 @@
 
         <variable
             name="product"
-            type="com.listing.grocery.data.remote.dto.ProductDetailDto" />
+            type="com.listing.grocery.data.remote.dto.ProductDto" />
     </data>
 
     <RelativeLayout
