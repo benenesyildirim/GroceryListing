@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GroceryListing</string>
+    <string name="price_header">Price:</string>
 </resources>
