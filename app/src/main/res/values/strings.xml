@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">GroceryListing</string>
     <string name="price_header">Price:</string>
+    <string name="went_wrong">Something went wrong…</string>
 </resources>

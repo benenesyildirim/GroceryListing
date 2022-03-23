@@ -3,10 +3,13 @@ package com.listing.grocery.presentation.detail
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.listing.grocery.R
 import com.listing.grocery.common.Resource
 import com.listing.grocery.databinding.FragmentDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,13 +37,17 @@ class DetailFragment : Fragment() {
 
                 when(response){
                     is Resource.Loading -> {
-                        Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
+                        if (response.data == null)
+                            binding.detailLoading.visibility = VISIBLE
+                        else
+                            binding.detailLoading.visibility = GONE
                     }
                     is Resource.Success -> {
-                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                        binding.detailLoading.visibility = GONE
                     }
                     is Resource.Error -> {
-                        Toast.makeText(context, "Error...", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, response.message ?: getString(R.string.went_wrong), Toast.LENGTH_SHORT).show()
+                        binding.detailLoading.visibility = GONE
                     }
                 }
 

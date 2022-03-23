@@ -3,6 +3,8 @@ package com.listing.grocery.presentation.listing
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -33,19 +35,29 @@ class ListFragment : Fragment() {
     }
 
     private fun observeProducts() {
-        with(viewModel){
-            productsLiveData.observe(viewLifecycleOwner){response ->
+        with(viewModel) {
+            productsLiveData.observe(viewLifecycleOwner) { response ->
                 setProductList(response)
 
-                when(response){
+                when (response) {
                     is Resource.Loading -> {
-                        Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
+                        if (response.data!!.isNotEmpty())
+                            binding.listingLoading.visibility = GONE
+                        else
+                            binding.listingLoading.visibility = VISIBLE
                     }
                     is Resource.Success -> {
-                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                        binding.listingLoading.visibility = GONE
                     }
                     is Resource.Error -> {
-                        Toast.makeText(context, "Error...", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            response.message ?: getString(R.string.went_wrong),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        if (response.data!!.isNotEmpty())
+                            binding.listingLoading.visibility = GONE
                     }
                 }
 
